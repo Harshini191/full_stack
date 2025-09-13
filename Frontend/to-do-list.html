@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>jQuery To-Do List</title>
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 40px;
+    }
+    #todo-container {
+      max-width: 400px;
+      margin: auto;
+    }
+    ul {
+      list-style-type: none;
+      padding: 0;
+    }
+    li {
+      padding: 10px;
+      background: #f1f1f1;
+      margin-bottom: 5px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-radius: 5px;
+    }
+    button {
+      margin-left: 5px;
+      padding: 4px 8px;
+      cursor: pointer;
+      border: none;
+      border-radius: 3px;
+    }
+    .delete-btn {
+      background: crimson;
+      color: white;
+    }
+    .edit-btn {
+      background: orange;
+      color: white;
+    }
+  </style>
+</head>
+<body>
+  <div id="todo-container">
+    <h2>📋 To-Do List</h2>
+    <input type="text" id="task-input" placeholder="Enter new task">
+    <button id="add-task">Add</button>
+
+    <ul id="task-list"></ul>
+  </div>
+
+  <script>
+    $(document).ready(function() {
+      // Add Task
+      $("#add-task").click(function() {
+        let taskText = $("#task-input").val().trim();
+        if (taskText !== "") {
+          $("#task-list").append(`
+            <li>
+              <span class="task-text">${taskText}</span>
+              <div>
+                <button class="edit-btn">Edit</button>
+                <button class="delete-btn">Delete</button>
+              </div>
+            </li>
+          `);
+          $("#task-input").val(""); // clear input
+        } else {
+          alert("Please enter a task!");
+        }
+      });
+
+      // Delete Task
+      $(document).on("click", ".delete-btn", function() {
+        $(this).closest("li").remove();
+      });
+
+      // Edit Task
+      $(document).on("click", ".edit-btn", function() {
+        let li = $(this).closest("li");
+        let currentText = li.find(".task-text").text();
+        let newText = prompt("Update your task:", currentText);
+        if (newText !== null && newText.trim() !== "") {
+          li.find(".task-text").text(newText.trim());
+        }
+      });
+    });
+  </script>
+</body>
+</html>
